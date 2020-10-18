@@ -6,7 +6,7 @@ import click
 _DIFF_LIB_CUT_OFF = 0.6
 
 
-class EZVenvBaseError(Exception):
+class VenvDirBaseError(Exception):
     """A base error for venvdir"""
 
 
@@ -29,7 +29,7 @@ class _ErrorHandlingGroup(click.Group):
             return super().invoke(ctx)
         except click.UsageError as err:
             self._suggest_cmd(err)
-        except EZVenvBaseError as err:
+        except VenvDirBaseError as err:
             _print_error(err)
         except click.ClickException:
             raise

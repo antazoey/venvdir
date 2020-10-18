@@ -1,6 +1,7 @@
 import os
 import venv
 
+from venvdir.error import VenvDirBaseError
 from venvdir._configparser import config_parser
 from venvdir.util import get_default_venvs_path
 
@@ -48,11 +49,11 @@ def create_entry(name, path=None):
     if not path:
         path = get_default_venvs_path()
     elif not os.path.exists(path):
-        raise Exception("Base path '{}' does not exist.".format(path))
+        raise VenvDirBaseError("Base path '{}' does not exist.".format(path))
 
     env_path = os.path.join(path, name)
     if os.path.exists(env_path):
-        raise Exception("Virtual environment '{}' already exists.".format(env_path))
+        raise VenvDirBaseError("Virtual environment '{}' already exists.".format(env_path))
     venv.create(env_path, with_pip=True)
     add_entry(name, path)
 

@@ -1,6 +1,5 @@
 import click
 import os
-import venv
 
 from venvdir.error import _ErrorHandlingGroup
 from venvdir.venvs import add_entry
@@ -10,6 +9,7 @@ from venvdir.venvs import get_entry
 from venvdir.venvs import remove_entry
 from venvdir.util import format_to_table
 from venvdir.util import find_format_width
+from venvdir.util import get_bin_path
 
 _CONTEXT_SETTINGS = {
     "help_option_names": ["-h", "--help"],
@@ -67,8 +67,11 @@ def remove(name):
 @name_arg
 def activate(name):
     """Activates a virtual environment for the given name."""
+    path_prefix = get_bin_path()
     entry = get_entry(name)
-    os.system("cat ~/.bash_profile {0}/bin/activate > {0}/bin/activate2 && /bin/bash --rcfile env/bin/activate2".format(entry.path))
+    path_suffix = "venvdira.sh".format(entry.path)
+    script_path = os.path.join(path_prefix, path_suffix)
+    os.exec(script_path, [])
 
 
 @click.command()

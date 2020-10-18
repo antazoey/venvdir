@@ -1,7 +1,7 @@
 import os
-import subprocess
 from configparser import ConfigParser
 
+from venvdir.error import VenvDirBaseError
 from venvdir.util import get_user_project_path
 from venvdir.util import get_default_venvs_path
 
@@ -25,7 +25,7 @@ class VenvsConfigParser:
             entry = dict(self.parser[name])
             return entry
         except KeyError:
-            raise Exception("Entry '{}' does not exist.".format(name))
+            raise VenvDirBaseError("Entry '{}' does not exist.".format(name))
 
     def create_entry(self, name, path=None):
         path = path or get_default_venvs_path()

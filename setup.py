@@ -35,5 +35,5 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
     ],
     entry_points={"console_scripts": ["venvdir=venvdir.main:cli"]},
-    scripts=["bin/activate.sh", "bin/get_venvdir_path.py"]
+    scripts=["bin/venvdira.sh", "bin/get_venvdir_path.py"]
 )
