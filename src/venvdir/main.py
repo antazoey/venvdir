@@ -22,7 +22,7 @@ def _list():
     if not entries:
         click.echo("Found no existing virtual environments.")
         return
-    rows, column_size = find_format_width(entries[0])
+    rows, column_size = find_format_width(entries)
     table = format_to_table(rows, column_size)
     click.echo(table)
 
@@ -41,7 +41,7 @@ def create_path_option(required):
 
 @click.command()
 @name_arg
-@create_path_option(True)
+@create_path_option(False)
 def create(name, path):
     """Creates a new virtual environment."""
     create_entry(name, path)
@@ -49,7 +49,7 @@ def create(name, path):
 
 @click.command()
 @name_arg
-@create_path_option(False)
+@create_path_option(True)
 def add(name, path):
     """Adds an existing environment."""
     add_entry(name, path)
@@ -57,7 +57,7 @@ def add(name, path):
 
 @click.command()
 @name_arg
-def remove():
+def remove(name):
     """Removes and deletes a virtual environments and all its files."""
     remove_entry(name)
 
@@ -67,7 +67,7 @@ def remove():
 def activate(name):
     """Activates a virtual environment for the given name."""
     entry = get_entry(name)
-    activate_script_path = "{}/bin/activate".format(entry["path"])
+    activate_script_path = "{}/bin/activate".format(entry.path)
     exec(". {}".format(activate_script_path))
 
 

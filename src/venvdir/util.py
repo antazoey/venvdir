@@ -17,6 +17,10 @@ def get_user_project_path(*sub_dirs):
     return result_path
 
 
+def get_default_venvs_path():
+    return get_user_project_path("venvs")
+
+
 def format_to_table(rows, column_size):
     """Formats given rows into a string of left justified table."""
     lines = []
@@ -28,26 +32,34 @@ def format_to_table(rows, column_size):
     return "\n".join(lines)
 
 
-def find_format_width(record):
+def find_format_width(record, header=None, include_header=True):
     """Fetches needed keys/items to be displayed based on header keys.
 
     Finds the largest string against each column so as to decide the padding size for the column.
 
     Args:
         record (dict): data to be formatted.
+        header (dict): key-value where keys should map to keys of record dict and
+          value is the corresponding column name to be displayed on the CLI.
+        include_header (bool): include header in output, defaults to True.
 
     Returns:
-        tuple (list of dict, dict): Ordered records, padding size of columns mapped to names.
+        tuple (list of dict, dict): i.e Filtered records, padding size of columns.
     """
     rows = []
-    # noinspection PyTypeChecker
-    max_width_item = dict(record.items())  # Copy
+    if include_header:
+        if not header:
+            header = _get_default_header(record)
+        rows.append(header)
+    max_width_item = dict(header.items())  # Copy
     for record_row in record:
         row = OrderedDict()
-        for header_key in record.keys():
+        for header_key in header.keys():
             item = record_row.get(header_key)
             row[header_key] = item
-            max_width_item[header_key] = max(max_width_item[header_key], str(item), key=len)
+            max_width_item[header_key] = max(
+                max_width_item[header_key], str(item), key=len
+            )
         rows.append(row)
     column_size = {key: len(value) for key, value in max_width_item.items()}
     return rows, column_size
