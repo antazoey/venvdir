@@ -1,5 +1,6 @@
 import os
 import venv
+import shutil
 
 from venvdir.error import VenvDirBaseError
 from venvdir._configparser import config_parser
@@ -23,21 +24,27 @@ class ManagedVirtualEnvironment:
         return self._entry["path"]
 
     def get(self, item):
-        if item == "Name":
+        if item.lower() == "name":
             return self.name
         return self._entry.get(item)
 
     def items(self):
         items = list(self._entry.items())
-
-        items.append(("Name", self.name))
-
+        if len(items):
+            items.append(("name", self.name))
         return items
 
     def keys(self):
         keys = list(self._entry.keys())
-        keys.append("Name")
+        if len(keys):
+            keys.append("name")
         return keys
+
+    def __repr__(self):
+        return "Virtual Env: (name={}, path={})".format(self.name, self.path)
+
+    def __str__(self):
+        return "Virtual Env: (name={}, path={})".format(self.name, self.path)
 
 
 def get_entries():
@@ -70,5 +77,5 @@ def get_entry(name):
 
 def remove_entry(name):
     entry = get_entry(name)
-    os.remove(entry.path)
+    shutil.rmtree(entry.path)
     config_parser.remove_entry(name)

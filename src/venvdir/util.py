@@ -28,9 +28,10 @@ def format_to_table(rows, column_size):
     lines = []
     for row in rows:
         line = ""
-        keys = sorted(list(row.keys()))
+        keys = sorted(row.keys())
         for key in keys:
-            line += str(row[key]).ljust(column_size[key] + _PADDING_SIZE)
+            key_lower = key.lower()
+            line += str(row[key_lower]).ljust(column_size[key_lower] + _PADDING_SIZE)
         lines.append(line)
     return "\n".join(lines)
 
@@ -78,5 +79,5 @@ def _get_default_header(header_items):
         keys = item.keys()
         for key in keys:
             if key not in header and isinstance(key, str):
-                header[key] = key
+                header[key] = key.capitalize()
     return header

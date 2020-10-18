@@ -22,7 +22,7 @@ class VenvsConfigParser:
 
     def get_entry(self, name):
         try:
-            entry = {k.capitalize(): v for k, v in self.parser[name].items()}
+            entry = {k: v for k, v in self.parser[name].items()}
             return entry
         except KeyError:
             raise VenvDirBaseError("Entry '{}' does not exist.".format(name))
@@ -36,6 +36,7 @@ class VenvsConfigParser:
 
     def remove_entry(self, name):
         self.parser.remove_section(name)
+        self._save()
 
     def _save(self):
         with open(self.path, "w+", encoding="utf-8") as file:
