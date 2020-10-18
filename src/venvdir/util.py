@@ -26,7 +26,8 @@ def format_to_table(rows, column_size):
     lines = []
     for row in rows:
         line = ""
-        for key in row.keys():
+        keys = row.keys().sorted
+        for key in keys:
             line += str(row[key]).ljust(column_size[key] + _PADDING_SIZE)
         lines.append(line)
     return "\n".join(lines)
