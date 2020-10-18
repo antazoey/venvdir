@@ -6,7 +6,7 @@ import click
 _DIFF_LIB_CUT_OFF = 0.6
 
 
-class EZVenvBaseError:
+class EZVenvBaseError(Exception):
     """A base error for venvdir"""
 
 
