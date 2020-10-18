@@ -22,7 +22,7 @@ class VenvsConfigParser:
 
     def get_entry(self, name):
         try:
-            entry = dict(self.parser[name])
+            entry = {k.capitalize(): v for k, v in self.parser[name].items()}
             return entry
         except KeyError:
             raise VenvDirBaseError("Entry '{}' does not exist.".format(name))

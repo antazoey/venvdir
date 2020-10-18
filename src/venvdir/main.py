@@ -1,5 +1,4 @@
 import click
-import os
 
 from venvdir.error import _ErrorHandlingGroup
 from venvdir.venvs import add_entry
@@ -9,7 +8,6 @@ from venvdir.venvs import get_entry
 from venvdir.venvs import remove_entry
 from venvdir.util import format_to_table
 from venvdir.util import find_format_width
-from venvdir.util import get_bin_path
 
 _CONTEXT_SETTINGS = {
     "help_option_names": ["-h", "--help"],
@@ -28,7 +26,7 @@ def _list():
     click.echo(table)
 
 
-name_arg = click.argument("name")
+name_arg = click.argument("Name")
 
 
 def create_path_option(required):
@@ -63,17 +61,6 @@ def remove(name):
     remove_entry(name)
 
 
-@click.command(name=".")
-@name_arg
-def activate(name):
-    """Activates a virtual environment for the given name."""
-    path_prefix = get_bin_path()
-    entry = get_entry(name)
-    path_suffix = "venvdira.sh".format(entry.path)
-    script_path = os.path.join(path_prefix, path_suffix)
-    os.exec(script_path, [])
-
-
 @click.command()
 @name_arg
 def which(name):
@@ -82,7 +69,13 @@ def which(name):
     click.echo(entry.path)
 
 
-@click.group(cls=_ErrorHandlingGroup, context_settings=_CONTEXT_SETTINGS)
+HELP = """\b
+    Activate a virtual environment by doing:
+    \n\tsource venvdira <env-name>
+"""
+
+
+@click.group(cls=_ErrorHandlingGroup, context_settings=_CONTEXT_SETTINGS, help=HELP)
 def cli():
     pass
 
@@ -90,6 +83,5 @@ def cli():
 cli.add_command(_list)
 cli.add_command(create)
 cli.add_command(add)
-cli.add_command(activate)
 cli.add_command(which)
 cli.add_command(remove)

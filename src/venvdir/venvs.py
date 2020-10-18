@@ -23,20 +23,20 @@ class ManagedVirtualEnvironment:
         return self._entry["path"]
 
     def get(self, item):
-        if item == "name":
+        if item == "Name":
             return self.name
         return self._entry.get(item)
 
     def items(self):
         items = list(self._entry.items())
 
-        items.append(("name", self.name))
+        items.append(("Name", self.name))
 
         return items
 
     def keys(self):
         keys = list(self._entry.keys())
-        keys.append("name")
+        keys.append("Name")
         return keys
 
 
@@ -53,7 +53,9 @@ def create_entry(name, path=None):
 
     env_path = os.path.join(path, name)
     if os.path.exists(env_path):
-        raise VenvDirBaseError("Virtual environment '{}' already exists.".format(env_path))
+        raise VenvDirBaseError(
+            "Virtual environment '{}' already exists.".format(env_path)
+        )
     venv.create(env_path, with_pip=True)
     add_entry(name, path)
 

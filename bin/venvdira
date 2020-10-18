@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This file must be used with "source bin/activate" *from bash*
 # you cannot run it directly
 
@@ -43,7 +45,7 @@ deactivate nondestructive
 ### -----------------
 
 print_usage () {
-  echo -e "Usage: \n\t venvdira <venv-name> <venv-path>"
+  echo -e "Usage: \n\t venvdira <venv-name>"
 }
 
 if [[ -z "${1}" ]]; then

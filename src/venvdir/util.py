@@ -80,11 +80,3 @@ def _get_default_header(header_items):
             if key not in header and isinstance(key, str):
                 header[key] = key
     return header
-
-
-def get_bin_path():
-    bin_path = "{}{}bin".format(sys.exec_prefix, os.path.sep)
-    if os.path.exists(bin_path):
-        return bin_path
-    else:
-        raise RuntimeError("No bin path found: {}.".format(bin_path))
