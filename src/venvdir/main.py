@@ -15,12 +15,11 @@ _CONTEXT_SETTINGS = {
 }
 
 
-@click.command(name="list")
+@click.command(name="ls")
 def _list():
     """Lists all managed virtual environments."""
     entries = get_entries()
     if not entries:
-        click.echo("Found no existing virtual environments.")
         return
     rows, column_size = find_format_width(entries)
     table = format_to_table(rows, column_size)
@@ -55,19 +54,20 @@ def add(name, path):
     add_entry(name, path)
 
 
-@click.command()
+@click.command(name="rm")
 @name_arg
 def remove(name):
     """Removes and deletes a virtual environments and all its files."""
     remove_entry(name)
 
 
-@click.command()
+@click.command(name=".")
 @name_arg
 def activate(name):
     """Activates a virtual environment for the given name."""
     entry = get_entry(name)
     activate_script_path = "{}/bin/activate".format(entry.path)
+    print(activate_script_path)
     exec(". {}".format(activate_script_path))
 
 

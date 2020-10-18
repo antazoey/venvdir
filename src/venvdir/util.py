@@ -2,7 +2,7 @@ from collections import OrderedDict
 from os import makedirs
 from os import path
 
-_PADDING_SIZE = 3
+_PADDING_SIZE = 5
 
 
 def get_user_project_path(*sub_dirs):
@@ -26,7 +26,7 @@ def format_to_table(rows, column_size):
     lines = []
     for row in rows:
         line = ""
-        keys = row.keys().sorted
+        keys = sorted(list(row.keys()))
         for key in keys:
             line += str(row[key]).ljust(column_size[key] + _PADDING_SIZE)
         lines.append(line)
