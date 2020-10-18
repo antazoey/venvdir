@@ -1,4 +1,6 @@
 import click
+import os
+import venv
 
 from venvdir.error import _ErrorHandlingGroup
 from venvdir.venvs import add_entry
@@ -66,9 +68,7 @@ def remove(name):
 def activate(name):
     """Activates a virtual environment for the given name."""
     entry = get_entry(name)
-    activate_script_path = "{}/bin/activate".format(entry.path)
-    print(activate_script_path)
-    exec(". {}".format(activate_script_path))
+    os.system("cat ~/.bash_profile {0}/bin/activate > {0}/bin/activate2 && /bin/bash --rcfile env/bin/activate2".format(entry.path))
 
 
 @click.command()

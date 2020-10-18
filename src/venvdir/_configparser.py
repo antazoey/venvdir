@@ -1,4 +1,5 @@
 import os
+import subprocess
 from configparser import ConfigParser
 
 from venvdir.util import get_user_project_path
@@ -27,9 +28,10 @@ class VenvsConfigParser:
             raise Exception("Entry '{}' does not exist.".format(name))
 
     def create_entry(self, name, path=None):
+        path = path or get_default_venvs_path()
         self.parser.add_section(name)
         self.parser[name] = {}
-        self.parser[name]["path"] = path or get_default_venvs_path()
+        self.parser[name]["path"] = os.path.join(path, name)
         self._save()
 
     def remove_entry(self, name):
