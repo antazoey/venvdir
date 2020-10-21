@@ -1,8 +1,8 @@
+import shutil
 from collections import OrderedDict
 import os
 from os import makedirs
 from os import path
-import sys
 
 _PADDING_SIZE = 5
 
@@ -81,3 +81,8 @@ def _get_default_header(header_items):
             if key not in header and isinstance(key, str):
                 header[key] = key.capitalize()
     return header
+
+
+def remove_directory(path_to_remove):
+    if path_to_remove != path.expanduser("~"):
+        shutil.rmtree(path_to_remove)

@@ -1,10 +1,12 @@
 import os
-import venv
+from venv import create as create_venv
+from os.path import exists as does_path_exist
 import shutil
 
 from venvdir.error import VenvDirBaseError
 from venvdir._configparser import config_parser
 from venvdir.util import get_default_venvs_path
+from venvdir.util import remove_directory
 
 
 class ManagedVirtualEnvironment:
@@ -55,27 +57,30 @@ def get_entries():
 def create_entry(name, path=None):
     if not path:
         path = get_default_venvs_path()
-    elif not os.path.exists(path):
+    elif not does_path_exist(path):
         raise VenvDirBaseError("Base path '{}' does not exist.".format(path))
 
     env_path = os.path.join(path, name)
-    if os.path.exists(env_path):
+    if does_path_exist(env_path):
         raise VenvDirBaseError(
             "Virtual environment '{}' already exists.".format(env_path)
         )
-    venv.create(env_path, with_pip=True)
-    add_entry(name, path)
+    create_venv(env_path, with_pip=True)
+    config_parser.create_entry(name, path)
 
 
 def add_entry(name, path):
+    if not does_path_exist(path):
+        raise VenvDirBaseError("Venv path '{}' does not exist.".format(path))
     config_parser.create_entry(name, path)
 
 
 def get_entry(name):
-    return ManagedVirtualEnvironment(name, config_parser.get_entry(name))
+    config_entry = config_parser.get_entry(name)
+    return ManagedVirtualEnvironment(name, config_entry)
 
 
 def remove_entry(name):
     entry = get_entry(name)
-    shutil.rmtree(entry.path)
+    remove_directory(entry.path)
     config_parser.remove_entry(name)
