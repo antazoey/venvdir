@@ -1,7 +1,6 @@
 import os
 from venv import create as create_venv
 from os.path import exists as does_path_exist
-import shutil
 
 from venvdir.error import VenvDirBaseError
 from venvdir._configparser import config_parser

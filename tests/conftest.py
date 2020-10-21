@@ -1,3 +1,7 @@
+import pytest
+from click.testing import CliRunner
+
+
 class MockSection:
     def __init__(self, name, values_dict):
         self.name = name
@@ -14,3 +18,9 @@ class MockSection:
 
     def items(self):
         return self.values_dict.items()
+
+
+@pytest.fixture
+def runner():
+    return CliRunner()
+

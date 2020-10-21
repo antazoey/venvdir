@@ -16,7 +16,7 @@ _CONTEXT_SETTINGS = {
 
 
 @click.command(name="ls")
-def _list():
+def list_command():
     """Lists all managed virtual environments."""
     entries = get_entries()
     if not entries:
@@ -29,7 +29,7 @@ def _list():
 name_arg = click.argument("Name")
 
 
-def create_path_option(required):
+def _create_path_option(required):
     return click.option(
         "--path",
         "-p",
@@ -40,7 +40,7 @@ def create_path_option(required):
 
 @click.command()
 @name_arg
-@create_path_option(False)
+@_create_path_option(False)
 def create(name, path):
     """Creates a new virtual environment."""
     create_entry(name, path)
@@ -48,7 +48,7 @@ def create(name, path):
 
 @click.command()
 @name_arg
-@create_path_option(True)
+@_create_path_option(True)
 def add(name, path):
     """Adds an existing environment."""
     add_entry(name, path)
@@ -80,7 +80,7 @@ def cli():
     pass
 
 
-cli.add_command(_list)
+cli.add_command(list_command)
 cli.add_command(create)
 cli.add_command(add)
 cli.add_command(which)
